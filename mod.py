@@ -152,6 +152,35 @@ def validate_credentials(username,password):
     else:
         return False
 
+def view_table(table_name):
+    conn=sqlite3.connect(USER_DB_PATH)
+    cursor=conn.cursor()
+    cursor.execute("PRAGMA table_info({})".format(table_name))
+    r1=cursor.fetchall();
+    r1=[i[1] for i in r1]
+    cursor.execute("SELECT * from {}".format(table_name))
+    r2=cursor.fetchall()
+    conn.close()
+    return [r1,r2]
+
+def view_users():
+    conn=sqlite3.connect(USER_DB_PATH)
+    cursor=conn.cursor()
+    cursor.execute("PRAGMA table_info('credentials')")
+    r1=cursor.fetchall();
+    r1=[i[1] for i in r1]
+    cursor.execute("SELECT username,email,active from 'credentials'")
+    r2=cursor.fetchall()
+    conn.close()
+    return [r1,r2]
+
+@app.route("/view-users",)
+@login_required
+def view_users_page():
+    content=get_page_vars('en')
+    coltitles,rows = view_users()
+    return render_template("table-view.html", content=content,coltitles=['Username','E-mail','Active'],rows=rows,table_title='User view')
+
 #@app.route('/user-list')
 def get_users():
     conn=sqlite3.connect(USER_DB_PATH)

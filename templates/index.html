@@ -99,14 +99,16 @@ body{
 {% endblock %}
 
 <!-- Edit pencil -->
+{% if current_user.is_authenticated %}
 <div class="text-right col-lg-12 row" >
-  <a href="/edit/{{content.lang}}/{{content.page}}"> 🖉 </a>
+  <a href="/edit/{{content.lang}}/{{content.page}}">✎</a>
   &nbsp;
 </div>
+{% endif %}
 
 <!-- Login -->
 <div class="col-lg-10 col-lg-offset-1 text-center row">
-{% if current_user.is_authenticated %}Logged in as {{current_user.get_id()}} <a href="/mod-panel">Moderator panel</a><br/><a href="/logout">Log out</a<{% else %}<a href="/login">Log in</a>{%endif%}
+{% if current_user.is_authenticated %}Logged in as {{current_user.get_id()}} <a href="/mod-panel">Moderator panel</a><br/><a href="/logout?next={{request.url}}">Log out</a<{% else %}<a href="/login?next={{request.url}}">Log in</a>{%endif%}
 </div>
 
 
