@@ -1,0 +1,26 @@
+  {% extends "index.html" %}
+
+    {% block content %}
+    <div class="container-fluid text-center" id="page-content">
+
+      <h2>{{ table_title }}</h2>
+
+      <form method="post">
+
+        <div class="table-responsive col-10">
+          <table class="table">
+            <tr> {% for coltitle in coltitles %} <td> {{coltitle}} </td> {%endfor%}</tr>
+        {% for r in rows %}
+        <tr>
+          {% for e in r %}
+          <td>{{e}}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+        </table>
+        </div>
+      </form>
+      </div>
+
+  </div>
+  {% endblock %}
