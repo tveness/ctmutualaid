@@ -1,0 +1,26 @@
+  {% extends "index.html" %}
+
+    {% block content %}
+    <div class="container-fluid text-center" id="page-content">
+
+      <h2>Add moderator</h2>
+
+        <div class="col-sm-12 col-lg-6 col-lg-offset-3 fluid-container text-center row">
+      <form method="post">
+        <div class="col-10 form-group">
+          <input type="text" class="form-control" name=username placeholder="Username">
+        </div>
+        <div class="col-10 form-group">
+          <input type="password" class="form-control" name=password placeholder="password">
+        </div>
+        <div class="col-10 form-group">
+          <input type="text" class="form-control" name=email placeholder="name@website.com">
+        </div>
+        <div class="col-10 form-group">
+        <button type="submit" class="btn btn-primary"> Submit</button>
+        </div>
+      </form>
+      </div>
+
+  </div>
+  {% endblock %}

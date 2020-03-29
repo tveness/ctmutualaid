@@ -1,0 +1,28 @@
+  {% extends "index.html" %}
+
+    {% block content %}
+    <div class="container-fluid text-center" id="page-content">
+
+      <h2>View resources</h2>
+
+      <form method="post">
+
+        <div class="table-responsive col-10">
+          <table class="table">
+        <tr> <th>Description</th> <th>Link</th> <th>Category</th> <th>Remove from list (I have added to site)</th></tr>
+        {% for i in resource_list %}
+        <tr>
+          <td> {{i[2]}} </td>
+          <td> {{i[3]}} </td>
+          <td> {% if i[4] == -1 %} Other {% else %} {{cat_list[i[4]]}} {% endif %} </td>
+          <td> <label class="checkbox-inline"> <input type="checkbox" name="toremove" value={{i[0]}}> </label> </td>
+        </tr>
+        {% endfor %}
+        </table>
+        </div>
+        <button type="submit" class="btn btn-primary"> Submit</button>
+      </form>
+      </div>
+
+  </div>
+  {% endblock %}

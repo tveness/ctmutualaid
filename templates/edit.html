@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+{% block content %}
+
+{% if content.posts %}
+<form method='post'>
+<div class="panel-group container-fluid text-center">
+{% for title,post_content in content.posts.items() %}
+   <div class="col-xs-12 col-sm-4">
+	  <div class="panel panel-primary text-center">
+	   <div class="panel-heading"><input type='text' class='form-control' value='{{ title }}' name='{{post_content[0]}}-title'> </div>
+	   <div class="panel-body text-left">
+       <textarea class='form-control' rows=15 name='{{post_content[0]}}-content'>{{post_content[1]}}</textarea>
+			 </div>
+
+    </div>
+    </div>
+    {%if loop.index %3==0 %}
+</div>
+<div class="panel-group container-fluid text-center">
+    {% endif %}
+    {% endfor %}
+    </div>
+{% endif %}
+
+
+        {% endblock %}
+
+{% block footer %}
+<div class="text-right" >
+<button type="submit">
+✓</button>
+</form>
+  &nbsp;
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+  {% extends "index.html" %}
+
+    {% block content %}
+    <div class="container-fluid text-center" id="page-content">
+
+      <h2>Activate moderator</h2>
+
+      <form method="post">
+
+        <div class="table-responsive col-10">
+          <table class="table">
+        <tr> <th>Name</th> <th>Select</th></tr>
+        {% for i in user_list %}
+        <tr> <td> {{i[0]}} </td>  <td>  <label class="radio-inline"><input type="radio" name="id" value="{{i[0]}}"></input></label></td></tr>
+        {% endfor %}
+        </table>
+        </div>
+        <button type="submit" class="btn btn-primary"> Submit</button>
+      </form>
+      </div>
+
+  </div>
+  {% endblock %}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="{% block html_lang %}{{ DEFAULT_LANG }}{% endblock html_lang %}">
+
+<head>
+
+  {% if page %}
+
+  {% if page.js %}
+  <script src="/js/{{ page.js }}"></script>
+  {% endif %}
+
+  {% endif %}
+
+        {% block head %}
+        <title>{% block title %}{{ SITENAME }}{% endblock title %}</title>
+        <meta charset="utf-8" />
+    		<meta name="viewport" content="width=device-width, initial-scale=1">
+    		<!-- Latest compiled and minified CSS -->
+    		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400;700&display=swap" rel="stylesheet">
+        <style>
+        .table th {
+          text-align: center;
+        }
+        body{
+        	font-family: "Sen", sans-serif !important;
+        	font-family-sans-serif: "Sen", sans-serif !important;
+        	font-size: 18px;
+        }
+        </style>
+
+        {% if FEED_ALL_ATOM %}
+        <link href="{{ FEED_DOMAIN }}/{% if FEED_ALL_ATOM_URL %}{{ FEED_ALL_ATOM_URL }}{% else %}{{ FEED_ALL_ATOM }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Full Atom Feed" />
+        {% endif %}
+        {% if FEED_ALL_RSS %}
+        <link href="{{ FEED_DOMAIN }}/{% if FEED_ALL_RSS_URL %}{{ FEED_ALL_RSS_URL }}{% else %}{{ FEED_ALL_RSS }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Full RSS Feed" />
+        {% endif %}
+        {% if FEED_ATOM %}
+        <link href="{{ FEED_DOMAIN }}/{%if FEED_ATOM_URL %}{{ FEED_ATOM_URL }}{% else %}{{ FEED_ATOM }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Atom Feed" />
+        {% endif %}
+        {% if FEED_RSS %}
+        <link href="{{ FEED_DOMAIN }}/{% if FEED_RSS_URL %}{{ FEED_RSS_URL }}{% else %}{{ FEED_RSS }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} RSS Feed" />
+        {% endif %}
+        {% if CATEGORY_FEED_ATOM and category %}
+        <link href="{{ FEED_DOMAIN }}/{% if CATEGORY_FEED_ATOM_URL %}{{ CATEGORY_FEED_ATOM_URL.format(slug=category.slug) }}{% else %}{{ CATEGORY_FEED_ATOM.format(slug=category.slug) }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Categories Atom Feed" />
+        {% endif %}
+        {% if CATEGORY_FEED_RSS and category %}
+        <link href="{{ FEED_DOMAIN }}/{% if CATEGORY_FEED_RSS_URL %}{{ CATEGORY_FEED_RSS_URL.format(slug=category.slug) }}{% else %}{{ CATEGORY_FEED_RSS.format(slug=category.slug) }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Categories RSS Feed" />
+        {% endif %}
+        {% if TAG_FEED_ATOM and tag %}
+        <link href="{{ FEED_DOMAIN }}/{% if TAG_FEED_ATOM_URL %}{{ TAG_FEED_ATOM_URL.format(slug=tag.slug) }}{% else %}{{ TAG_FEED_ATOM.format(slug=tag.slug) }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Tags Atom Feed" />
+        {% endif %}
+        {% if TAG_FEED_RSS and tag %}
+        <link href="{{ FEED_DOMAIN }}/{% if TAG_FEED_RSS_URL %}{{ TAG_FEED_RSS_URL.format(slug=tag.slug) }}{% else %}{{ TAG_FEED_RSS.format(slug=tag.slug) }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Tags RSS Feed" />
+        {% endif %}
+        {% endblock head %}
+</head>
+
+<body id="index" class="home">
+
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+	    <div class="navbar-header">
+	    <a class="navbar-brand" href="/">
+        {{ AUTHOR }}
+      </a>
+	    </div>
+        <ul class="nav navbar-nav">
+        {% for title, link in MENUITEMS %}
+            <li><a href="{{ link }}">{{ title }}</a></li>
+        {% endfor %}
+        {% if DISPLAY_PAGES_ON_MENU %}
+          {% for p in pages |sort(attribute="date") %}
+            <li{% if p == page %} class="active"{% endif %}><a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a></li>
+          {% endfor %}
+        {% endif %}
+        {% if DISPLAY_CATEGORIES_ON_MENU %}
+          {% for cat, null in categories %}
+            <li{% if cat == category %} class="active"{% endif %}><a href="{{ SITEURL }}/{{ cat.url }}">{{ cat }}</a></li>
+          {% endfor %}
+        {% endif %}
+        </ul>
+	<ul class="nav navbar-nav navbar-right">
+		<li><a href="/{{ output_file }}">English</a></li>
+		<li><a href="/es/{{ output_file }}">Español</a></li>
+		<li><a href="/ar/{{ output_file }}">العربية</a></li>
+	</ul>
+    </div>
+  </nav>
+
+
+<div class="container-fluid">
+ <div class="row">
+  <div class="col-lg-12 text-center">
+	  <h1 class="mt-5">{{ AUTHOR }}</h1>
+    <p class="lead"> ☎ (224) 334-3233 </p>
+  </div>
+</div>
+</div>
+        {% block content %}
+        {% endblock %}
+<div class="fluid-container text-center" >
+	<p> This is a work in progress and will be updated over the coming days and as more resources become available. </p>
+	<p>We wish to acknowledge the
+	<a href="https://docs.google.com/document/d/1sprOsMLFieTEU6fakfG5mqirp3AUUGKGz6JnDg29n78/edit?fbclid=IwAR17SrC2B5JCeHFzItGSz0W26rIdJhlpjteegVwueU5o1S1TzlFNiWXSG-Q">Mutual Aid Jamaica Plain & Roxbury</a> network's
+	<a href="https://docs.google.com/document/d/1ca-sz4DRNvUg8ezcrfd6awH-ahxBDJwnbdzxm4_qDVs/edit?fbclid=IwAR1lzSwA5XnvkVDXBNBkqsJkEB_fKPLMgQMVIUhKJ8GkRG7ZOfhi3gqY5HY">how-to guide</a>.
+</p>
+</div><!-- /#contentinfo -->
+</body>
+</html>

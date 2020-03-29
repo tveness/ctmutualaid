@@ -1,0 +1,35 @@
+  {% extends "index.html" %}
+
+    {% block content %}
+    <div class="container-fluid text-center" id="page-content">
+
+      <h2>Submit resource</h2>
+
+      {% if showform==True %}
+        <div class="col-sm-12 col-lg-6 col-lg-offset-3 fluid-container text-center row">
+      <form method="post">
+        <div class="col-10 form-group">
+          <label for="resource-text">{{ form_content.res_description[0] }}</label>
+          <input type="text" class="form-control" name=resource-text placeholder="{{ form_content.res_description[1] }}">
+          <small id="resource-text-help" class="form-text text-muted">{{ form_content.res_description[2] }}</small>
+        </div>
+        <div class="col-10 form-group">
+          <label for="resource-link">Resource link</label>
+          <input type="text" class="form-control" name=resource-link placeholder="https://portal.ct.gov">
+          <small id="resource-link-help" class="form-text text-muted">Please enter a link to the resource</small>
+        </div>
+        <div class="col-10 form-group">
+          <label for="category-sel">{{ form_content.cats[0] }}</label>
+            <select class="form-control" name=cat>
+              {% for i in categories %} <option value="{{ i[0] }}">{{ i[1] }}</option> {% endfor %}
+              <option value=-1>Other</option>
+            </select>
+          <small id="resource-link-help" class="form-text text-muted">{{ form_content.cats[1] }}</small>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ form_content.submit_button}} </button>
+      </form>
+      </div>
+      {% endif %}
+
+  </div>
+  {% endblock %}

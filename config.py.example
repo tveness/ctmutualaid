@@ -1,0 +1,6 @@
+#!/usr/bin/env/python
+
+
+secret_key='bOazZS7tI_Zzi-r75rgwKQ'
+USER_DB_PATH="user.db"
+DB_PATH="web_data.db"
