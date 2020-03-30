@@ -323,6 +323,7 @@ def get_page_content(page,lang):
     #Get languages
     cursor.execute("SELECT language,language_display from languages")
     to_return['langs']=cursor.fetchall()
+    to_return['lang']=lang
 
     conn.close()
     return to_return
