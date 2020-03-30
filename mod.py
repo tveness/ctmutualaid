@@ -270,10 +270,10 @@ def edit_page(lang, page="home"):
 
     #First check language exists in the database
     if not validate_language(lang):
-        return "Language not implemented"
+        abort(404)# "Language not implemented"
     #Check if page is in page list, otherwise throw error page for _that language_
     if page not in get_page_list(lang):
-        return "Page not implemented"
+        abort(404)
 
     content=get_page_content(page,lang)
 
@@ -405,7 +405,7 @@ def insert_resource(submitted_form):
 def sub_page(lang):
     #Check page exists in language
     if 'submit' not in get_page_list(lang):
-        return "Page not implement yet"
+        abort(404)
 
     if request.method=="GET":
         form_content=get_submit_content(lang)
@@ -498,6 +498,12 @@ def unauthorised_page(e):
 #    print("Referrer: "+request.url)
 
     return redirect(url_for('login',next=request.url))
+
+@app.errorhandler(404)
+def not_found(e):
+    content=get_page_vars('en')
+    return render_template('404.html', content=content), 404
+
 
 @app.route("/favicon.ico")
 def fav():
