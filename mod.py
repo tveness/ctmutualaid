@@ -443,10 +443,12 @@ def page(lang, page="home"):
 
     #First check language exists in the database
     if not validate_language(lang):
-        return "Language not implemented"
+        abort(404)
+#        return "Language not implemented"
     #Check if page is in page list, otherwise throw error page for _that language_
     if page not in get_page_list(lang):
-        return "Page not implemented"
+        abort(404)
+#        return "Page not implemented"
 
     content=get_page_content(page,lang)
     content['lang']=lang
