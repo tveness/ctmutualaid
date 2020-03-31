@@ -3,23 +3,29 @@
 
 {% if content.posts %}
 <form method='post'>
-<div class="panel-group container-fluid text-center">
+<div class="card-columns col-lg-12 ">
 {% for title,post_content in content.posts.items() %}
-   <div class="col-xs-12 col-sm-4">
-	  <div class="panel panel-primary text-center">
-	   <div class="panel-heading"><input type='text' class='form-control' value='{{ title }}' name='{{post_content[0]}}-title'> </div>
-	   <div class="panel-body text-left">
+   <div class="card">
+	   <div class="card-header bg-info text-white text-center">
+       <input type='text' class='form-control' value='{{ title }}' name='{{post_content[0]}}-title'>
+      </div>
+     <div class="card-body">
+     <p class="card-text">
        <textarea class='form-control' rows=15 name='{{post_content[0]}}-content'>{{post_content[1]}}</textarea>
+       </p>
 			 </div>
 
     </div>
-    </div>
-    {%if loop.index %3==0 %}
-</div>
-<div class="panel-group container-fluid text-center">
-    {% endif %}
     {% endfor %}
     </div>
+{% endif %}
+
+{% if content.jumbo %}
+<div class="jumbotron text-center" style="text-align:center;">
+  <h2> <input type="text" class="form-control" value='{{content.jumbo[4]}}' name="jumbo_title"> </h2>
+  <textarea class='form-control' rows=10 name="jumbo_text">{{content.jumbo[3]}}</textarea>
+</div>
+
 {% endif %}
 
 

@@ -8,6 +8,7 @@ from validate_email import validate_email
 
 import config
 
+import re
 import sqlite3
 import string
 import json
@@ -249,8 +250,9 @@ def edit_page(lang, page="home"):
         ids={}
 #        print([i for i in request.form.keys()])
         for i in request.form.keys():
-            id=int(i.split('-',1)[0])
-            ids[id]=1
+            if(len(i.split('-',1))==2):
+                id=int(i.split('-',1)[0])
+                ids[id]=1
 
 
 
@@ -259,6 +261,12 @@ def edit_page(lang, page="home"):
             title=request.form[str(id)+"-title"]
             content=request.form[str(id)+"-content"]
             cursor.execute("UPDATE posts SET title=?, content=? where id=?",(title,content,id))
+        if "jumbo_title" in request.form.keys() and "jumbo_text" in request.form.keys():
+            jumbo_title=request.form['jumbo_title']
+            jumbo_text=request.form['jumbo_text']
+            pj=page+"-jumbo"
+            cursor.execute("UPDATE posts SET title=?, content=? where page_name=? and language=?",(jumbo_title,jumbo_text,pj,lang))
+
 
         conn.commit()
         conn.close()
@@ -325,8 +333,15 @@ def get_page_content(page,lang):
     to_return['langs']=cursor.fetchall()
     to_return['lang']=lang
 
+    #Jumbotron?
+    cursor.execute("SELECT * from posts where language=? AND page_name=?",(lang,page+"-jumbo"))
+    results=cursor.fetchone()
+    to_return['jumbo']=results
+
+
     conn.close()
     return to_return
+
 
 def get_page_vars(lang):
     to_return={}

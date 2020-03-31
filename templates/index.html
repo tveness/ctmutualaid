@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 
-<html lang="{{ content.lang }}">
+<html lang="{{ content.lang }}" {% if content.rtl==1 %}dir="rtl"{% endif %}>
 <head>
   		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 <title> {{ content.site_name }} </title>
-  		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-      <link href="https://fonts.googleapis.com/css2?family=Sen&display=swap" rel="stylesheet">
-      {% if content.rtl==1 %}
-        <link rel="stylesheet" href="https://cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css">
-      {% endif %}
+<!-- Latest compiled and minified CSS -->
+{% if content.rtl==1 %}
+<link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css" integrity="sha384-vus3nQHTD+5mpDiZ4rkEPlnkcyTP+49BhJ4wJeJunw06ZAp+wzzeBPUXr42fi8If" crossorigin="anonymous">
+{% else %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% endif %}
+
+<link href="https://fonts.googleapis.com/css2?family=Sen&display=swap" rel="stylesheet">
       <style>
       .table th {
         text-align: center;
@@ -24,28 +27,23 @@ body{
 
 
       </head>
-
-<body id="index" class="home">
-
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-	    <div class="navbar-header">
-  	    <a class="navbar-brand" href="/{{ content.lang }}">{{ content.display_site_name|markdown}}</a>
-	    </div>
+<body class="home">
+  <nav class="navbar navbar-light navbar-expand-sm bg-light">
+	    <a class="navbar-brand" href="/{{ content.lang }}">{{content.site_name}}</a>
         <ul class="nav navbar-nav">
           {% for p in content.pages %}
-            <li{% if p[0] == content.page %} class="active"{% endif %}><a href="/{{content.lang}}/{{ p[0] }}">{{ p[1] }}</a></li>
+            <li class="nav-item {% if p[0] == content.page %}active{% endif %}"><a class="nav-link" href="/{{content.lang}}/{{ p[0] }}">{{ p[1] }}</a></li>
           {% endfor %}
         </ul>
-	<ul class="nav navbar-nav {% if content.rtl ==1  %} navbar-left {% else %} navbar-right {% endif %}">
+	<ul class="nav navbar-nav ml-auto">
     {% for l in content.langs %}
-		<li><a href="/{{ l[0] }}/{{ content.page }}" {% if l[0] == content.lang %} class="active"{% endif %}>{{ l[1] }}</a></li>
+		<li class="nav-item"><a class="nav-link" href="/{{ l[0] }}/{{ content.page }}" {% if l[0] == content.lang %} class="active"{% endif %}>{{ l[1] }}</a></li>
     {% endfor %}
 	</ul>
     </div>
   </nav>
 
-<div class=" container-fluid col-lg-12 text-center row">
+<div class="jumbotron jumbotron-fluid text-center bg-white" style="margin-bottom:0px; padding-bottom:10px; padding-top:20px;">
 <h1>{{content.display_site_name|markdown}}</h1>
 <p class="lead"> ☎ (224) 334-3233 </p>
 {% if content.lead %}<p class="lead">{{ content.lead }}</p> {% endif %}
@@ -53,30 +51,35 @@ body{
 
 
 {% if content.page_content %}
-<div class="container-fluid text-center col-lg-12" id="page-content">
+<div class="fluid-container text-center col-lg-12" id="page-content" style="padding-bottom:20px;">
   {{ content.page_content|markdown }}
 </div>
 {% endif %}
 
 {% block content %}
 {% if content.posts %}
-<div class="panel-group container-fluid text-center">
-{% for title,post_content in content.posts.items() %}
-   <div class="col-xs-12 col-sm-4">
-	  <div class="panel panel-primary text-center">
-	   <div class="panel-heading"> {{ title }} </div>
-	   <div class="panel-body text-left">
-      {{ post_content[1]|markdown }}
-			 </div>
 
+<div class="card-columns col-lg-12 ">
+{% for title,post_content in content.posts.items() %}
+   <div class="card">
+	   <div class="card-header bg-info text-white text-center"> {{ title }} </div>
+     <div class="card-body">
+     <p class="card-text">
+      {{ post_content[1]|markdown }}
+     </p>
     </div>
-    </div>
-    {%if loop.index %3==0 %}
-</div>
-<div class="panel-group container-fluid text-center">
-    {% endif %}
+  </div>
     {% endfor %}
   </div>
+
+{% endif %}
+
+{% if content.jumbo %}
+<div class="jumbotron jumbotron-fluid text-center bg-white" style="text-align:center; padding-top: 20px; padding-bottom:0px;">
+  <h2> {{content.jumbo[4]}}</h2>
+  {{content.jumbo[3]|markdown}}
+</div>
+
 {% endif %}
 
 
@@ -84,7 +87,7 @@ body{
 
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% for category, message in messages %}
-<div class="container col-lg-8 col-lg-offset-2 text-center row alert-{{ category }}" > {{ message }} <br/></div>
+<div class="container col-lg-8 mx-auto text-center alert-{{ category }}" > {{ message }} <br/></div>
       {% endfor %}
       {% endwith %}
 
@@ -92,22 +95,22 @@ body{
 
 {% if content.footer %}
 <!-- Footer -->
-<div class="fluid-container col-lg-10 col-lg-offset-1 col-sm-12 text-center row" >
- {{ content.footer |markdown }}
+<div class="container col-lg-8 col-sm-12 offset-lg-2 text-center" style="padding-top:10px;">
+{{ content.footer |markdown }}
 </div>
 {% endif %}
 {% endblock %}
 
 <!-- Edit pencil -->
 {% if current_user.is_authenticated %}
-<div class="text-right col-lg-12 row" >
+<div class="text-right col-lg-12" >
   <a href="/edit/{{content.lang}}/{{content.page}}">✎</a>
   &nbsp;
 </div>
 {% endif %}
 
 <!-- Login -->
-<div class="col-lg-10 col-lg-offset-1 text-center row">
+<div class="col-lg-10 mx-auto text-center">
 {% if current_user.is_authenticated %}Logged in as {{current_user.get_id()}} <a href="/mod-panel">Moderator panel</a><br/><a href="/logout?next={{request.url}}">Log out</a<{% else %}<a href="/login?next={{request.url}}">Log in</a>{%endif%}
 </div>
 
