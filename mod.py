@@ -254,8 +254,6 @@ def edit_page(lang, page="home"):
                 id=int(i.split('-',1)[0])
                 ids[id]=1
 
-
-
 #        print(ids.keys())
         for id in ids.keys():
             title=request.form[str(id)+"-title"]
@@ -273,8 +271,6 @@ def edit_page(lang, page="home"):
 
         flash("Updated page", "success")
         return redirect('/'+lang+'/'+page)
-
-
 
     #First check language exists in the database
     if not validate_language(lang):
@@ -451,7 +447,6 @@ def page(lang, page="home"):
 #        return "Page not implemented"
 
     content=get_page_content(page,lang)
-    content['lang']=lang
 
     return render_template("index.html", content=content)
 
