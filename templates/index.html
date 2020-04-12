@@ -79,10 +79,13 @@ body{
 
 {% endif %}
 
-{% if content.jumbo %}
+{% if content.jumbo_title and content.jumbo_cards %}
 <div class="jumbotron jumbotron-fluid text-center bg-white" style="text-align:center; padding-top: 20px; padding-bottom:0px;">
-  <h2> {{content.jumbo[4]}}</h2>
-  {{content.jumbo[3]|markdown}}
+  <h2> {{content.jumbo_title}}</h2>
+  {% for i in content.jumbo_cards %}
+      {{ i|markdown }}
+    {% endfor %}
+</div>
 </div>
 
 {% endif %}

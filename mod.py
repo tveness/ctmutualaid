@@ -19,6 +19,7 @@ import secrets
 #prefix="api"
 USER_DB_PATH=config.USER_DB_PATH
 DB_PATH=config.DB_PATH
+OFFERINGS_PATH=config.OFFERINGS_PATH
 
 
 app = Flask(__name__)
@@ -332,10 +333,12 @@ def get_page_content(page,lang):
     #Jumbotron?
     cursor.execute("SELECT * from posts where language=? AND page_name=?",(lang,page+"-jumbo"))
     results=cursor.fetchone()
-    to_return['jumbo']=results
-
-
     conn.close()
+    if results:
+        to_return['jumbo_title']=results[4]
+        to_return['jumbo_cards']=results[3].split("\n")
+        to_return['jumbo']=results
+
     return to_return
 
 
@@ -410,6 +413,44 @@ def insert_resource(submitted_form):
     results=cursor.fetchall()
     conn.commit()
     conn.close()
+
+def get_column_titles(lang):
+    print("Called!")
+    conn=sqlite3.connect(OFFERINGS_PATH)
+    cursor=conn.cursor()
+
+    cursor.execute("SELECT column_names from column_names WHERE lang=?",(lang,))
+    results=cursor.fetchone()[0]
+    conn.close()
+    column_name_strings=json.loads(results).values()
+    return column_name_strings
+
+def get_offerings_rows():
+    conn=sqlite3.connect(OFFERINGS_PATH)
+    cursor=conn.cursor()
+
+    cursor.execute("SELECT * from ctmutualaid_data")
+    results=cursor.fetchall()
+    conn.close()
+    return [i[:-1] for i in results]
+
+
+
+def get_table_data(lang):
+    d={}
+    d['coltitles']=get_column_titles(lang)
+    d['rows']=get_offerings_rows()
+    return d
+
+@app.route("/<lang>/offerings")
+def offerings_page(lang):
+    if 'offerings' not in get_page_list(lang):
+        abort(404)
+
+    content=get_page_vars(lang)
+    content['page']='offerings'
+    table_data=get_table_data(lang)
+    return render_template('offerings.html',content=content,table_data=table_data)
 
 
 
@@ -532,6 +573,6 @@ def fav():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="localhost", port=8005)
+    app.run(debug=True, host="localhost", port=8002)
 #    from flup.server.fcgi import WSGIServer
 #    WSGIServer(app, bindAddress="/var/www/htdocs/aid_app/fcgi.sock",umask=0).run()
