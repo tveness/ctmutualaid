@@ -436,6 +436,16 @@ def get_offerings_rows():
     random.shuffle(results)
     return [i[:-1] for i in results]
 
+def get_lead(page,lang):
+    conn=sqlite3.connect(DB_PATH)
+    cursor=conn.cursor()
+    #Get page specific content
+    cursor.execute("SELECT lead, page_content from pages WHERE page_name=? AND language=?",(page,lang))
+    results=cursor.fetchall()
+    conn.close()
+    return results[0]
+
+
 
 
 def get_table_data(lang):
@@ -451,6 +461,7 @@ def offerings_page(lang):
 
     content=get_page_vars(lang)
     content['page']='offerings'
+    content['lead'],content['page_content']=get_lead('offerings',lang)
     table_data=get_table_data(lang)
     return render_template('offerings.html',content=content,table_data=table_data)
 
