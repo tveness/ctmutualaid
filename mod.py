@@ -14,6 +14,7 @@ import string
 import json
 import bcrypt
 import secrets
+import random
 
 
 #prefix="api"
@@ -432,6 +433,7 @@ def get_offerings_rows():
     cursor.execute("SELECT * from ctmutualaid_data")
     results=cursor.fetchall()
     conn.close()
+    random.shuffle(results)
     return [i[:-1] for i in results]
 
 

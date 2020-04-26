@@ -66,17 +66,28 @@ def main():
     if not values:
         print('No data found.')
     else:
+        #Flush table
+        flush_table()
+        
         for row in values:
             print(row)
             insert_row(row+[""]*(25-len(row)))
 
             # Insert into database IF EMAIL NOT IN THERE
+def flush_table():
+    conn=sqlite3.connect(LOCAL_DB)
+    cursor=conn.cursor()
+    cursor.execute("DELETE FROM ctmutualaid_data");
+    conn.commit()
+    conn.close()
+
 
 def insert_row(row):
     conn=sqlite3.connect(LOCAL_DB)
     cursor=conn.cursor()
-    cursor.execute("INSERT or IGNORE into ctmutualaid_data VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13],row[14],row[15],row[16],row[17],row[22],row[24],"False"))
-# 0: data
+    cursor.execute("INSERT or IGNORE into ctmutualaid_data VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",\
+            (row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13],row[14],row[15],row[16],row[17],row[21],row[22],row[24],"False"))
+# 0: timestampe
 # 1: EMAIL
 # 2: case management
 # 3: childcard

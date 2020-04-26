@@ -12,29 +12,63 @@
     <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js"></script>
 
 
+    <script>
+      function toggle_col(datname,but_num){
+        vis_cols= JSON.stringify($('#table').bootstrapTable('getVisibleColumns').map(function(it) { return it.field }));
+
+
+        if (vis_cols.includes(datname)) {
+         $('#table').bootstrapTable('hideColumn',datname);
+         $(['#',but_num,"-button"].join('')).removeClass('btn-primary');
+         $(['#',but_num,"-button"].join('')).addClass('btn-secondary');
+        }
+        else{
+          $('#table').bootstrapTable('showColumn',datname);
+         $(['#',but_num,"-button"].join('')).addClass('btn-primary');
+         $(['#',but_num,"-button"].join('')).removeClass('btn-secondary');
+        }
+
+      }
+
+      $(document).ready(
+    function()  {
+    {% for coltitle in table_data.coltitles %}
+    {%if loop.index > 8 %}
+    toggle_col('{{coltitle}}',{{loop.index}});
+    {%endif%}
+      {% endfor %}
+    });
+    </script>
+    {% for coltitle in table_data.coltitles %}
+    <button class="btn btn-primary" onClick="toggle_col('{{coltitle}}',{{loop.index}})" id="{{loop.index}}-button"
+    >
+      {{coltitle}}
+      </button>
+      {% endfor %}
 
 
 
     <div class="container-fluid text-center" id="page-content">
 
 
-        <div class="table-responsive col-10 mx-auto">
-          <table class="table table-bordered table-hover table-sm" id="table">
-            <tr> {% for coltitle in table_data.coltitles %} <th style="position: sticky; top: 0;" scope="col"> {{coltitle}} </th> {%endfor%}</tr>
-        {% for r in table_data.rows %}
-        <tr>
-          {% for e in r %}
-          {% if e == 'x' %}
-          <td style="background-color: #a9f9b4"></td>
-          {% else %}
-          <td>{{e}}</td>
-          {% endif %}
-          {% endfor %}
-        </tr>
-        {% endfor %}
+
+
+        <div class="table-responsive col-12 mx-auto">
+          <table class="table table-bordered table-hover table-sm" id="table" data-toggle="table" data-search="true" data-show-columns="true" data-sortable="true" data-pagination="true" >
+            <thead>
+            <tr>
+  {% for coltitle in table_data.coltitles %} <th{% if loop.index > 2 %} data-sortable="true"{%endif%} data-field='{{coltitle}}'>{{coltitle}}</th>
+  {%endfor%} </tr>
+  </thead>
+  {%for row in table_data.rows %} <tr>
+    {%for e in row %}
+    {% if (loop.index < 25) %} {% if e=='x' %} <td class="td-success">x</td> {% else %} <td>{{e}}</td> {% endif %} {% endif %} {%endfor%}
+  </tr>
+  {%endfor%}
         </table>
         </div>
       </div>
 
-  </div>
+
+
   {% endblock %}
